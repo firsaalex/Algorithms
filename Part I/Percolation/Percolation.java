@@ -15,7 +15,7 @@ public class Percolation {
     private int N;                 // grid size = N*N    
     private boolean[] siteState;   // site is Open or Blocked    
     private WeightedQuickUnionUF wqu;     // weighed  quick union 
-    private WeightedQuickUnionUF wquShort;
+    private WeightedQuickUnionUF wqu1;
     
        
     
@@ -24,8 +24,8 @@ public class Percolation {
         
         N = n; // set grid size
         
-        wqu = new WeightedQuickUnionUF(N*N+2);        // general data structure
-        wquShort = new WeightedQuickUnionUF(N*N+2);   // for backwash bug fix
+        wqu = new WeightedQuickUnionUF(N*N+2);
+        wqu1 = new WeightedQuickUnionUF(N*N+2);
         siteState = new boolean[N*N+2];
             
         //Block every site exepts virtual 
@@ -36,8 +36,22 @@ public class Percolation {
         }
         siteState[0] = OPEN; // open top virtual site
         siteState[1] = OPEN; // open bottom virtual site
-             
         
+        
+        /*
+        
+        //Connect virtual site to first row
+        for (int j = 1; j <= N; j++) {
+            wqu.union(0, xyTo1D(1, j));
+            wqu1.union(0, xyTo1D(1, j));
+        }
+        
+        //Connect virtual site to last row
+        for (int j = 1; j <= N; j++) {
+            wqu.union(1, xyTo1D(N, j));
+        }
+        
+        */
             
     }
     
@@ -59,7 +73,7 @@ public class Percolation {
         
         if (i == 1) {
             wqu.union(0, xyTo1D(i, j)); 
-            wquShort.union(0, xyTo1D(i, j)); 
+            wqu1.union(0, xyTo1D(i, j)); 
         }
         
         if (i == N) {
@@ -70,28 +84,28 @@ public class Percolation {
             // check top site
             if (isOpen(i-1, j)) {
               wqu.union(xyTo1D(i, j), xyTo1D(i-1, j)); 
-              wquShort.union(xyTo1D(i, j), xyTo1D(i-1, j)); 
+              wqu1.union(xyTo1D(i, j), xyTo1D(i-1, j)); 
             }
         }
         if (i < N) {
              // check botoom site
           if (isOpen(i+1, j)) {
             wqu.union(xyTo1D(i, j), xyTo1D(i+1, j));
-            wquShort.union(xyTo1D(i, j), xyTo1D(i+1, j));
+            wqu1.union(xyTo1D(i, j), xyTo1D(i+1, j));
           }
         }
         if (j > 1) {
              // check left site
             if (isOpen(i, j-1)) {
               wqu.union(xyTo1D(i, j), xyTo1D(i, j-1));
-              wquShort.union(xyTo1D(i, j), xyTo1D(i, j-1));
+              wqu1.union(xyTo1D(i, j), xyTo1D(i, j-1));
             }
         }
         if (j < N) {
              // check right site
           if (isOpen(i, j+1)) {
             wqu.union(xyTo1D(i, j), xyTo1D(i, j+1));
-            wquShort.union(xyTo1D(i, j), xyTo1D(i, j+1));
+            wqu1.union(xyTo1D(i, j), xyTo1D(i, j+1));
           }
         }
         
@@ -109,28 +123,25 @@ public class Percolation {
     
     
     
-    /*
-     * Is site (row i, column j) full?
-     * Site is full if it is opened and can be connected to top virtual site
-     * Backwash: check connection in wquShort to exclude bottom virtual site
-     */ 
-        
+    // is site (row i, column j) full?
+    // site is full if it is opened and can be connected to top virtual site
     public boolean isFull(int i, int j) {
         validateIndex(i, j);
         
-        if (isOpen(i, j))  return wquShort.connected(0, xyTo1D(i, j));    
+        if (isOpen(i, j))  return wqu1.connected(0, xyTo1D(i, j));    
         else return false;
     }
     
     
     
     
-    /* Does the system percolate?
-     * Check connection virtual top and bottom sites in general WQU to  minimize time
-     */
+    // does the system percolate?
     public boolean percolates() {
         return wqu.connected(0, 1);
     }
+    
+    
+    
     
     
     // Validate Index
@@ -168,7 +179,7 @@ public class Percolation {
     
     
     
-    // visualite siteState as TRUE (OPEN) and FALSE  (BLOCKED) 
+    // visualite siteState as 0s and 1s   0 - BLOCKED   1 - OPEN
     private void visualizeGridState() {
         System.out.printf("\r\n             %b \r\n", siteState[0]); 
         for (int i = 0; i < N; i++) {
@@ -194,7 +205,7 @@ public class Percolation {
         int k = 1;
         int l = 1;
         int siteCnt = 0;
-        Percolation prc = new Percolation(10);
+        Percolation prc = new Percolation(1);
         
         do {
             try {
@@ -203,26 +214,27 @@ public class Percolation {
                 l = (int) Math.floor(Math.random()*prc.N + 1);
                 
                 prc.open(k, l);
+                prc.visualizeGridState();
+                System.out.printf("\r\n [%d, %d]isFull==%b\r\n", k, l, prc.isFull(k, l));
+                System.out.printf("=========================================\r\n\r\n");
   
             } 
             catch (NumberFormatException ex) {
-                  System.out.println("Incorrect indexes!");
-            }                               
+                  System.out.println("Not a number !");
+            } 
+           
+            
+            
         
         }
         while (!prc.percolates());
-        
-        // visualizer
         prc.visualizeGridState(); 
         
-        // Open site counter 
         for (int i = 1; i <= prc.N; i++) {
             for (int j = 1; j <= prc.N; j++) {
                if (prc.isOpen(i, j))siteCnt++; 
             }
         }
-        
-        //Print result
         System.out.printf("\r\nResult=%d", siteCnt);
         
     } 
