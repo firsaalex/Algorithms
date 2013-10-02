@@ -30,10 +30,10 @@ public class Board {
     // number of blocks out of place
     public int hamming() {
         int wrongPlacedBlockCounter = 0;
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 // miss last block cause we don't have to count zero block
-                if(!((i == N-1) && (j == N-1))) {
+                if (!((i == N-1) && (j == N-1))) {
                     if (puzzle[i][j] != (i*N+j+1)) wrongPlacedBlockCounter++;
                 }
             }
@@ -48,22 +48,21 @@ public class Board {
         int goalRow;
         int goalColumn;
 
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 // miss last block cause we don't have to count zero block
-                if(!((i == N-1) && (j == N-1))) {
-                    // if block is zero, we exactly know goal position (last position)
-                    if(puzzle[i][j] == 0) {
-                        goalColumn = N - 1;
-                        goalRow = N - 1;
-                    }
-                    else {
-                        goalRow = (puzzle[i][j] - 1) / N;
-                        goalColumn = puzzle[i][j] - N*goalRow - 1;
-                    }
+
+                // if block is zero, we exactly know goal position (last position)
+                if (puzzle[i][j] > 0) {
+
+                    goalRow = (puzzle[i][j] - 1) / N;
+                    goalColumn = puzzle[i][j] - N*goalRow - 1;
 
                     manhattanDistancesSum += (Math.abs(i - goalRow) + Math.abs(j - goalColumn));
                 }
+
+
+
             }
         }
         return manhattanDistancesSum;
@@ -72,15 +71,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        int[][] goal = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if((i == N - 1) && (j == N - 1)) goal[i][j] = 0;
-                else goal[i][j] = i*N + j +1;
-            }
-        }
-        Board goalBoard = new Board(goal);
-        return equals(goalBoard);
+        return hamming() == 0;
     }
 
 
@@ -100,7 +91,7 @@ public class Board {
              i = (int) Math.floor(Math.random()*N);
              j = (int) Math.floor(Math.random()*(N-1));
 
-             if((puzzle[i][j] != 0) && (puzzle[i][j+1] != 0)) {
+             if ((puzzle[i][j] != 0) && (puzzle[i][j+1] != 0)) {
 
                  tmp[i][j] = puzzle[i][j+1];
                  tmp[i][j+1] = puzzle[i][j];
@@ -117,8 +108,9 @@ public class Board {
         if (y == null) return  false;
         if (y.getClass() != this.getClass()) return false;
         Board that = (Board) y;
+        if (this.puzzle.length != that.puzzle.length) return false;
 
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 if (this.puzzle[i][j] != that.puzzle[i][j]) return false;
             }
@@ -129,7 +121,7 @@ public class Board {
     // copy 2dim array
     private int[][] multyDimArrayCopy(int [][] that) {
         int[][] result = new int[N][N];
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 result[i][j] = that[i][j];
             }
@@ -146,38 +138,38 @@ public class Board {
         Stack<Board> neighborsStack = new Stack<Board>();
 
         //find zero block coordinates: i and j
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if(puzzle[i][j] == 0) {
+                if (puzzle[i][j] == 0) {
                     zeroI = i;
                     zeroJ = j;
                 }
-                val[i][j]=puzzle[i][j];
+                val[i][j] = puzzle[i][j];
             }
         }
 
-        if(zeroI > 0) {
+        if (zeroI > 0) {
             val[zeroI - 1][zeroJ] = 0;
             val[zeroI][zeroJ] = puzzle[zeroI - 1][zeroJ];
             neighborsStack.push(new Board(val));
             val = multyDimArrayCopy(puzzle);
         }
 
-        if(zeroI < (N-1)) {
+        if (zeroI < (N-1)) {
             val[zeroI + 1][zeroJ] = 0;
             val[zeroI][zeroJ] = puzzle[zeroI + 1][zeroJ];
             neighborsStack.push(new Board(val));
             val = multyDimArrayCopy(puzzle);
         }
 
-        if(zeroJ > 0) {
+        if (zeroJ > 0) {
             val[zeroI][zeroJ - 1] = 0;
             val[zeroI][zeroJ] = puzzle[zeroI][zeroJ - 1];
             neighborsStack.push(new Board(val));
             val = multyDimArrayCopy(puzzle);
         }
 
-        if(zeroJ < (N-1)) {
+        if (zeroJ < (N-1)) {
             val[zeroI][zeroJ + 1] = 0;
             val[zeroI][zeroJ] = puzzle[zeroI][zeroJ + 1];
             neighborsStack.push(new Board(val));
