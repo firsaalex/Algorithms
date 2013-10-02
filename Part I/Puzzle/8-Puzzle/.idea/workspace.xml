@@ -57,7 +57,7 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/Board.java" line="63" class="Board" package="">
+      <breakpoint url="file://$PROJECT_DIR$/src/Board.java" line="61" class="Board" package="">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -81,21 +81,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Board.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Board.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="171" column="11" selection-start="4651" selection-end="4651" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#3628#3635#0" expanded="true" />
+                <element signature="e#3602#3609#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Solver.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Solver.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Solver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="45" selection-start="655" selection-end="655" vertical-scroll-proportion="0.3794076">
+            <state line="24" column="45" selection-start="655" selection-end="655" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#2105#2117#0" expanded="true" />
                 <element signature="e#2162#2174#0" expanded="true" />
@@ -115,8 +115,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Board.java" />
         <option value="$PROJECT_DIR$/src/Solver.java" />
+        <option value="$PROJECT_DIR$/src/Board.java" />
       </list>
     </option>
   </component>
@@ -444,7 +444,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="147" column="8" selection-start="4090" selection-end="4090" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#3628#3635#0" expanded="true" />
+            <element signature="e#3602#3609#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -474,22 +474,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="171" column="11" selection-start="4651" selection-end="4651" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#3628#3635#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Solver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="45" selection-start="655" selection-end="655" vertical-scroll-proportion="0.3794076">
+        <state line="24" column="45" selection-start="655" selection-end="655" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#2105#2117#0" expanded="true" />
             <element signature="e#2162#2174#0" expanded="true" />
             <element signature="e#3592#3599#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#3602#3609#0" expanded="true" />
           </folding>
         </state>
       </provider>
