@@ -9,12 +9,12 @@ public class SAP {
     private Digraph digraph;
 
     // constructor takes a digraph (not necessarily a DAG)
-    public SAP(Digraph G){
+    public SAP(Digraph G) {
         digraph = new Digraph(G);
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
-    public int length(int v, int w){
+    public int length(int v, int w) {
 
         if ((v < 0) || (v >= digraph.V()))
             throw new IndexOutOfBoundsException();
@@ -23,7 +23,7 @@ public class SAP {
 
         DeluxeBFS bfsV = new DeluxeBFS(digraph, v);
         DeluxeBFS bfsW = new DeluxeBFS(digraph, w);
-        int anc = ancestor(v,w);
+        int anc = ancestor(v, w);
 
         if (anc == -1) return -1;
         return bfsV.distTo(anc) + bfsW.distTo(anc);
@@ -31,7 +31,7 @@ public class SAP {
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
-    public int ancestor(int v, int w){
+    public int ancestor(int v, int w) {
 
         if ((v < 0) || (v >= digraph.V()))
             throw new IndexOutOfBoundsException();
@@ -44,15 +44,15 @@ public class SAP {
         int distV, distW;
         int anc = -1;
         int i;
-        boolean markedV[];
-        boolean markedW[];
+        boolean[] markedV;
+        boolean[] markedW;
 
         DeluxeBFS bfsV = new DeluxeBFS(digraph, v);
         DeluxeBFS bfsW = new DeluxeBFS(digraph, w);
         markedV = bfsV.getMarked();
         markedW = bfsW.getMarked();
 
-        for (i = 0; i < digraph.V(); i ++) {
+        for (i = 0; i < digraph.V(); i++) {
             if (markedV[i] && markedW[i]) {
                 distV = bfsV.distTo(i);
                 distW = bfsW.distTo(i);
@@ -72,7 +72,7 @@ public class SAP {
     }
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
-    public int length(Iterable<Integer> v, Iterable<Integer> w){
+    public int length(Iterable<Integer> v, Iterable<Integer> w) {
 
         for (int vv: v) {
             if ((vv < 0) || (vv >= digraph.V()))
@@ -86,14 +86,14 @@ public class SAP {
 
         DeluxeBFS bfsV = new DeluxeBFS(digraph, v);
         DeluxeBFS bfsW = new DeluxeBFS(digraph, w);
-        int anc = ancestor(v,w);
+        int anc = ancestor(v, w);
 
         if (anc == -1) return -1;
         return bfsV.distTo(anc) + bfsW.distTo(anc);
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
-    public int ancestor(Iterable<Integer> v, Iterable<Integer> w){
+    public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
 
         for (int vv: v) {
             if ((vv < 0) || (vv >= digraph.V()))
@@ -111,15 +111,15 @@ public class SAP {
         int distV, distW;
         int anc = -1;
         int i;
-        boolean markedV[];
-        boolean markedW[];
+        boolean[] markedV;
+        boolean[] markedW;
 
         DeluxeBFS bfsV = new DeluxeBFS(digraph, v);
         DeluxeBFS bfsW = new DeluxeBFS(digraph, w);
         markedV = bfsV.getMarked();
         markedW = bfsW.getMarked();
 
-        for (i = 0; i < digraph.V(); i ++) {
+        for (i = 0; i < digraph.V(); i++) {
             if (markedV[i] && markedW[i]) {
                 distV = bfsV.distTo(i);
                 distW = bfsW.distTo(i);
@@ -138,7 +138,7 @@ public class SAP {
     }
 
     // for unit testing of this class (such as the one below)
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
 
         In in = new In(args[0]);

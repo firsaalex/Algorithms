@@ -17,7 +17,7 @@ public class WordNet {
 
 
     // constructor takes the name of the two input files
-    public WordNet(String synsets, String hypernyms){
+    public WordNet(String synsets, String hypernyms) {
         // input streams
         In inSynsets = new In(synsets);
         In inHypernyms = new In(hypernyms);
@@ -38,7 +38,7 @@ public class WordNet {
         syn = new String[N];
         id = new int[N];
 
-        for(String str: queue){
+        for (String str: queue) {
             fields = str.split(",");
             id[i] = Integer.parseInt(fields[0]);
             syn[i] = fields[1];
@@ -49,10 +49,10 @@ public class WordNet {
         digraph = new Digraph(N);
 
         // handle second input stream
-        while ( (s = inHypernyms.readLine()) != null) {
+        while ((s = inHypernyms.readLine()) != null) {
             fields = s.split(",");
             int n = fields.length;
-            for (int j = 1; j < n; j++){
+            for (int j = 1; j < n; j++) {
                 digraph.addEdge(Integer.parseInt(fields[0]), Integer.parseInt(fields[j]));
             }
         }
@@ -66,13 +66,13 @@ public class WordNet {
     }
 
     // the set of nouns (no duplicates), returned as an Iterable
-    public Iterable<String> nouns(){
-        String syns[];
+    public Iterable<String> nouns() {
+        String[] syns;
         Bag<Integer> bag;
 
-        for (int i = 0; i < syn.length; i++){
+        for (int i = 0; i < syn.length; i++) {
             syns = syn[i].split(" ");
-            for(String noun: syns){
+            for (String noun: syns) {
                 bag = nounToId.get(noun);
 
                 if (bag == null) {
@@ -91,35 +91,35 @@ public class WordNet {
     }
 
     // is the word a WordNet noun?
-    public boolean isNoun(String word){
+    public boolean isNoun(String word) {
         return nounToId.keySet().contains(word);
     }
 
     // distance between nounA and nounB (defined below)
-    public int distance(String nounA, String nounB){
+    public int distance(String nounA, String nounB) {
         if ((!isNoun(nounA)) || (!isNoun(nounB))) throw new IllegalArgumentException();
 
         SAP sap = new SAP(digraph);
 
-        return sap.length(nounToId.get(nounA),nounToId.get(nounB));
+        return sap.length(nounToId.get(nounA), nounToId.get(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
     // in a shortest ancestral path (defined below)
-    public String sap(String nounA, String nounB){
+    public String sap(String nounA, String nounB) {
         if ((!isNoun(nounA)) || (!isNoun(nounB))) throw new IllegalArgumentException();
 
         SAP sap = new SAP(digraph);
 
-        int anc = sap.ancestor(nounToId.get(nounA),nounToId.get(nounB));
+        int anc = sap.ancestor(nounToId.get(nounA), nounToId.get(nounB));
 
         return syn[anc];
     }
 
-    private void ckeckIfRooted(Digraph G){
-        int rootsNum=0;
+    private void ckeckIfRooted(Digraph G) {
+        int rootsNum = 0;
         for (int i = 0; i < G.V(); i++) {
-            if(!G.adj(i).iterator().hasNext())
+            if (!G.adj(i).iterator().hasNext())
                 rootsNum++;
         }
         if (rootsNum != 1) throw  new IllegalArgumentException("Digraph is not rooted");
@@ -132,7 +132,7 @@ public class WordNet {
 
     // for unit testing of this class
     public static void main(String[] args) {
-        WordNet wordNet = new WordNet(args[0],args[1]);
+        WordNet wordNet = new WordNet(args[0], args[1]);
         StdOut.println(wordNet.sap(args[3], args[4]) + " " + wordNet.distance(args[3], args[4]));
 
     }
