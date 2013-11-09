@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang = "en">
+
+<head>
+
+<link rel="icon"          href="http://algs4.cs.princeton.edu/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://algs4.cs.princeton.edu/favicon.ico" type="image/x-icon">
+<link rel="stylesheet"    href="http://algs4.cs.princeton.edu/java.css" type="text/css">
+
+<title>Domain.java</title>
+
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="AUTHOR" CONTENT="Robert Sedgewick and Kevin Wayne">
+<meta NAME="DESCRIPTION" CONTENT="Domain code in Java">
+<meta NAME="TITLE" CONTENT="Domain code in Java">
+<meta NAME="KEYWORDS" CONTENT="Domain,java,programming,computer science,algorithm,data structure,program,code">
+<meta NAME="ROBOTS" CONTENT="INDEX,FOLLOW">
+
+</head>
+
+
+<body>
+<center><h1>Domain.java</h1></center><p><br>
+
+Below is the syntax highlighted version of <a href = "Domain.java">Domain.java</a>
+from <a href = "http://algs4.cs.princeton.edu/25applications">&#167;2.5 Sorting Applications</a>.
+<p><br>
+
+<!-- Generator: GNU source-highlight 2.5
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span class="comment">/*************************************************************************</span>
+<span class="comment"> *  Compilation:  javac Domain.java</span>
+<span class="comment"> *  Execution:    java Domain &lt; input.txt</span>
+<span class="comment"> *  </span>
+<span class="comment"> *  Sort by reverse domain name.</span>
+<span class="comment"> * </span>
+<span class="comment"> *  % java Domain &lt; domains.txt</span>
+<span class="comment"> *  com.apple</span>
+<span class="comment"> *  com.cnn</span>
+<span class="comment"> *  com.google</span>
+<span class="comment"> *  edu.princeton</span>
+<span class="comment"> *  edu.princeton.cs</span>
+<span class="comment"> *  edu.princeton.cs.bolle</span>
+<span class="comment"> *  edu.princeton.cs.www</span>
+<span class="comment"> *  edu.princeton.ee</span>
+<span class="comment"> *</span>
+<span class="comment"> *************************************************************************/</span>
+
+<span class="preproc">import</span><span class="normal"> java</span><span class="symbol">.</span><span class="normal">util</span><span class="symbol">.</span><span class="normal">Arrays</span><span class="symbol">;</span>
+
+<span class="keyword">public</span><span class="normal"> </span><span class="keyword">class</span><span class="normal"> Domain </span><span class="keyword">implements</span><span class="normal"> Comparable</span><span class="symbol">&lt;</span><span class="normal">Domain</span><span class="symbol">&gt;</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">    </span><span class="keyword">private</span><span class="normal"> </span><span class="keyword">final</span><span class="normal"> String</span><span class="symbol">[]</span><span class="normal"> fields</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="keyword">private</span><span class="normal"> </span><span class="keyword">final</span><span class="normal"> </span><span class="type">int</span><span class="normal"> N</span><span class="symbol">;</span>
+
+<span class="normal">    </span><span class="comment">// store fields in reverse order</span>
+<span class="normal">    </span><span class="keyword">public</span><span class="normal"> </span><span class="function">Domain</span><span class="symbol">(</span><span class="normal">String name</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        fields </span><span class="symbol">=</span><span class="normal"> name</span><span class="symbol">.</span><span class="function">split</span><span class="symbol">(</span><span class="string">"</span><span class="specialchar">\\</span><span class="string">."</span><span class="symbol">);</span>
+<span class="normal">        N </span><span class="symbol">=</span><span class="normal"> fields</span><span class="symbol">.</span><span class="normal">length</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="cbracket">}</span>
+
+<span class="normal">    </span><span class="comment">// return string representation - fields, delimited by .</span>
+<span class="normal">    </span><span class="keyword">public</span><span class="normal"> String </span><span class="function">toString</span><span class="symbol">()</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">N </span><span class="symbol">==</span><span class="normal"> </span><span class="number">0</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">return</span><span class="normal"> </span><span class="string">""</span><span class="symbol">;</span>
+<span class="normal">        String s </span><span class="symbol">=</span><span class="normal"> fields</span><span class="symbol">[</span><span class="number">0</span><span class="symbol">];</span>
+<span class="normal">        </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="type">int</span><span class="normal"> i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">1</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> N</span><span class="symbol">;</span><span class="normal"> i</span><span class="symbol">++)</span>
+<span class="normal">            s </span><span class="symbol">=</span><span class="normal"> fields</span><span class="symbol">[</span><span class="normal">i</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">+</span><span class="normal"> </span><span class="string">"."</span><span class="normal"> </span><span class="symbol">+</span><span class="normal"> s</span><span class="symbol">;</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> s</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="cbracket">}</span>
+
+<span class="normal">    </span><span class="comment">// compare by reverse domain name</span>
+<span class="normal">    </span><span class="keyword">public</span><span class="normal"> </span><span class="type">int</span><span class="normal"> </span><span class="function">compareTo</span><span class="symbol">(</span><span class="normal">Domain that</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="type">int</span><span class="normal"> i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> Math</span><span class="symbol">.</span><span class="function">min</span><span class="symbol">(</span><span class="keyword">this</span><span class="symbol">.</span><span class="normal">N</span><span class="symbol">,</span><span class="normal"> that</span><span class="symbol">.</span><span class="normal">N</span><span class="symbol">);</span><span class="normal"> i</span><span class="symbol">++)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">            String s </span><span class="symbol">=</span><span class="normal"> </span><span class="keyword">this</span><span class="symbol">.</span><span class="normal">fields</span><span class="symbol">[</span><span class="keyword">this</span><span class="symbol">.</span><span class="normal">N </span><span class="symbol">-</span><span class="normal"> i </span><span class="symbol">-</span><span class="normal"> </span><span class="number">1</span><span class="symbol">];</span>
+<span class="normal">            String t </span><span class="symbol">=</span><span class="normal"> that</span><span class="symbol">.</span><span class="normal">fields</span><span class="symbol">[</span><span class="normal">that</span><span class="symbol">.</span><span class="normal">N </span><span class="symbol">-</span><span class="normal"> i </span><span class="symbol">-</span><span class="normal"> </span><span class="number">1</span><span class="symbol">];</span>
+<span class="normal">            </span><span class="type">int</span><span class="normal"> c </span><span class="symbol">=</span><span class="normal"> s</span><span class="symbol">.</span><span class="function">compareTo</span><span class="symbol">(</span><span class="normal">t</span><span class="symbol">);</span>
+<span class="normal">            </span><span class="keyword">if</span><span class="normal">      </span><span class="symbol">(</span><span class="normal">c </span><span class="symbol">&lt;</span><span class="normal"> </span><span class="number">0</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">return</span><span class="normal"> </span><span class="symbol">-</span><span class="number">1</span><span class="symbol">;</span>
+<span class="normal">            </span><span class="keyword">else</span><span class="normal"> </span><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">c </span><span class="symbol">&gt;</span><span class="normal"> </span><span class="number">0</span><span class="symbol">)</span><span class="normal"> </span><span class="keyword">return</span><span class="normal"> </span><span class="symbol">+</span><span class="number">1</span><span class="symbol">;</span>
+<span class="normal">        </span><span class="cbracket">}</span>
+<span class="normal">        </span><span class="keyword">return</span><span class="normal"> </span><span class="keyword">this</span><span class="symbol">.</span><span class="normal">N </span><span class="symbol">-</span><span class="normal"> that</span><span class="symbol">.</span><span class="normal">N</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="cbracket">}</span>
+
+
+
+
+
+<span class="normal">    </span><span class="comment">// test client</span>
+<span class="normal">    </span><span class="keyword">public</span><span class="normal"> </span><span class="keyword">static</span><span class="normal"> </span><span class="type">void</span><span class="normal"> </span><span class="function">main</span><span class="symbol">(</span><span class="normal">String</span><span class="symbol">[]</span><span class="normal"> args</span><span class="symbol">)</span><span class="normal"> </span><span class="cbracket">{</span>
+
+<span class="normal">        </span><span class="comment">// read in domain names</span>
+<span class="normal">        String</span><span class="symbol">[]</span><span class="normal"> names </span><span class="symbol">=</span><span class="normal"> StdIn</span><span class="symbol">.</span><span class="function">readAll</span><span class="symbol">().</span><span class="function">split</span><span class="symbol">(</span><span class="string">"</span><span class="specialchar">\\</span><span class="string">s+"</span><span class="symbol">);</span>
+<span class="normal">        Domain</span><span class="symbol">[]</span><span class="normal"> domains </span><span class="symbol">=</span><span class="normal"> </span><span class="keyword">new</span><span class="normal"> Domain</span><span class="symbol">[</span><span class="normal">names</span><span class="symbol">.</span><span class="normal">length</span><span class="symbol">];</span>
+<span class="normal">        </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="type">int</span><span class="normal"> i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> domains</span><span class="symbol">.</span><span class="normal">length</span><span class="symbol">;</span><span class="normal"> i</span><span class="symbol">++)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">            domains</span><span class="symbol">[</span><span class="normal">i</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="keyword">new</span><span class="normal"> </span><span class="function">Domain</span><span class="symbol">(</span><span class="normal">names</span><span class="symbol">[</span><span class="normal">i</span><span class="symbol">]);</span>
+<span class="normal">        </span><span class="cbracket">}</span>
+
+<span class="normal">        </span><span class="comment">// sort</span>
+<span class="normal">        Arrays</span><span class="symbol">.</span><span class="function">sort</span><span class="symbol">(</span><span class="normal">domains</span><span class="symbol">);</span>
+
+<span class="normal">        </span><span class="comment">// print results</span>
+<span class="normal">        </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="type">int</span><span class="normal"> i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> domains</span><span class="symbol">.</span><span class="normal">length</span><span class="symbol">;</span><span class="normal"> i</span><span class="symbol">++)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">            StdOut</span><span class="symbol">.</span><span class="function">println</span><span class="symbol">(</span><span class="normal">domains</span><span class="symbol">[</span><span class="normal">i</span><span class="symbol">]);</span>
+<span class="normal">        </span><span class="cbracket">}</span>
+<span class="normal">    </span><span class="cbracket">}</span>
+
+<span class="cbracket">}</span>
+
+
+</tt></pre>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10811519-2");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+<p><br><address><small>
+Copyright &copy; 2002&ndash;2010, Robert Sedgewick and Kevin Wayne.
+<br>Last updated: Sun Jul 24 09:29:10 EDT 2011.
+</small></address>
+
+</html>
