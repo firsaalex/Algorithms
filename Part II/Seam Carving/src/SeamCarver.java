@@ -101,17 +101,12 @@ public class SeamCarver {
         if ((x == 0) || (x == width - 1)) return borderEnergy;
         if ((y == 0) || (y == height - 1)) return borderEnergy;
 
-        int rx,gx,bx,ry,gy,by;
-
-        rx = r[x + 1][y] - r[x - 1][y];
-        gx = g[x + 1][y] - g[x - 1][y];
-        bx = b[x + 1][y] - b[x - 1][y];
-
-        ry = r[x][y + 1] - r[x][y - 1];
-        gy = g[x][y + 1] - g[x][y - 1];
-        by = b[x][y + 1] - b[x][y - 1];
-
-        return (Math.pow(rx, 2) + Math.pow(bx, 2) + Math.pow(gx, 2) + Math.pow(ry, 2) + Math.pow(gy, 2) + Math.pow(by, 2));
+        return (Math.pow(r[x + 1][y] - r[x - 1][y], 2) +
+                Math.pow(g[x + 1][y] - g[x - 1][y], 2) +
+                Math.pow(b[x + 1][y] - b[x - 1][y], 2) +
+                Math.pow(r[x][y + 1] - r[x][y - 1], 2) +
+                Math.pow(g[x][y + 1] - g[x][y - 1], 2) +
+                Math.pow(b[x][y + 1] - b[x][y - 1], 2));
     }
 
     private int minIndex(double[] a) {
@@ -146,6 +141,7 @@ public class SeamCarver {
                 adj[1] = energy[x + 1][y];
 
                 pixelHandler(x + 1, minIndex(adj) + y - 1);
+                adj = null;
             }
 
         }
@@ -166,6 +162,7 @@ public class SeamCarver {
                 adj[1] = energy[x][y + 1];
 
                 pixelHandler(minIndex(adj) + x - 1, y + 1);
+                adj = null;
             }
 
 
@@ -225,12 +222,13 @@ public class SeamCarver {
 
     // remove horizontal seam from picture
     public    void removeHorizontalSeam(int[] a) {
+        if (a.length != width) throw new RuntimeException();
 
         r = resizeHorizontalInt(r, a);
         g = resizeHorizontalInt(g, a);
         b = resizeHorizontalInt(b, a);
 
-        energy = resizeHorizontaldouble(energy, a);
+        energy = resizeHorizontalDouble(energy, a);
 
         height -= 1;
 
@@ -241,6 +239,7 @@ public class SeamCarver {
 
     // remove vertical seam from picture
     public    void removeVerticalSeam(int[] a) {
+        if (a.length != height) throw new RuntimeException();
 
         r = resizeVerticalInt(r, a);
         g = resizeVerticalInt(g, a);
@@ -254,7 +253,7 @@ public class SeamCarver {
 
     private int[][] resizeHorizontalInt(int[][] arr, int a[]) {
         int[][] tmp = new int[width][height - 1];
-        if (a.length != width) throw new RuntimeException();
+
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height - 1; j++) {
@@ -270,9 +269,9 @@ public class SeamCarver {
         return tmp;
     }
 
-    private double[][] resizeHorizontaldouble(double [][] arr, int a[]) {
+    private double[][] resizeHorizontalDouble(double[][] arr, int a[]) {
         double [][] tmp = new double[width][height - 1];
-        if (a.length != width) throw new RuntimeException();
+
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height - 1; j++) {
@@ -290,7 +289,6 @@ public class SeamCarver {
 
     private int[][] resizeVerticalInt(int[][] arr, int a[]) {
         int[][] tmp = new int[width - 1][height];
-        if (a.length != height) throw new RuntimeException();
 
         for (int i = 0; i < width - 1; i++) {
             for (int j = 0; j < height; j++) {
@@ -308,7 +306,6 @@ public class SeamCarver {
 
     private double[][] resizeVerticalDouble(double [][] arr, int a[]) {
         double [][] tmp = new double[width - 1][height];
-        if (a.length != height) throw new RuntimeException();
 
         for (int i = 0; i < width - 1; i++) {
             for (int j = 0; j < height; j++) {
