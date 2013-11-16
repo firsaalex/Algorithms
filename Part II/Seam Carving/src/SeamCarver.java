@@ -24,7 +24,7 @@ public class SeamCarver {
     // Energy
     private double[][] energy;
     private boolean transposed;
-    private final double borderEnergy = 195075;
+    private static final double borderEnergy = 195075;
 
     // seam
     private int[] verticalSeam;
@@ -49,17 +49,13 @@ public class SeamCarver {
                 g[i][j] = color.getGreen();
                 b[i][j] = color.getBlue();
 
+
             }
 
         }
 
         // compute energy martix
-        energy = new double[width][height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                energy[i][j] = energy(i,j);
-            }
-        }
+        updateEnergy();
 
         transposed = false;
 
@@ -141,7 +137,7 @@ public class SeamCarver {
                 adj[1] = energy[x + 1][y];
 
                 pixelHandler(x + 1, minIndex(adj) + y - 1);
-                adj = null;
+
             }
 
         }
@@ -157,12 +153,12 @@ public class SeamCarver {
                 else        adj[0] = energy[x - 1][y + 1];
 
                 if (x == width - 1) adj[2] = Double.POSITIVE_INFINITY;
-                else                 adj[2] = energy[x + 1][y + 1];
+                else                adj[2] = energy[x + 1][y + 1];
 
                 adj[1] = energy[x][y + 1];
 
                 pixelHandler(minIndex(adj) + x - 1, y + 1);
-                adj = null;
+
             }
 
 
@@ -182,7 +178,7 @@ public class SeamCarver {
 
         if (transposed) {
             curSeamPath = new int[height];
-            for (int i = 0; i < width; i++) {
+            for (int i = 0; i < width; i ++) {
                 totalEnergy = 0;
                 pixelHandler(i,0);
                 if (totalEnergy < curMinEnergy) {
@@ -228,9 +224,9 @@ public class SeamCarver {
         g = resizeHorizontalInt(g, a);
         b = resizeHorizontalInt(b, a);
 
-        energy = resizeHorizontalDouble(energy, a);
-
+        energy = resizeHorizontalEnergy(a);
         height -= 1;
+        updateEnergy();
 
     }
 
@@ -245,9 +241,11 @@ public class SeamCarver {
         g = resizeVerticalInt(g, a);
         b = resizeVerticalInt(b, a);
 
-        energy = resizeVerticalDouble(energy, a);
-
+        energy = resizeVerticalEnergy(energy, a);
         width -= 1;
+        updateEnergy();
+
+
 
     }
 
@@ -269,17 +267,17 @@ public class SeamCarver {
         return tmp;
     }
 
-    private double[][] resizeHorizontalDouble(double[][] arr, int a[]) {
+    private double[][] resizeHorizontalEnergy(int a[]) {
         double [][] tmp = new double[width][height - 1];
 
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height - 1; j++) {
                 if (j < a[i]) {
-                    tmp[i][j] = arr[i][j];
+                    tmp[i][j] = energy[i][j];
                 }
                 else {
-                    tmp[i][j] = arr[i][j + 1];
+                    tmp[i][j] = energy[i][j + 1];
                 }
 
             }
@@ -304,7 +302,7 @@ public class SeamCarver {
         return tmp;
     }
 
-    private double[][] resizeVerticalDouble(double [][] arr, int a[]) {
+    private double[][] resizeVerticalEnergy(double[][] arr, int a[]) {
         double [][] tmp = new double[width - 1][height];
 
         for (int i = 0; i < width - 1; i++) {
@@ -321,6 +319,13 @@ public class SeamCarver {
         return tmp;
     }
 
-
+    private void updateEnergy() {
+        energy = new double[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                energy[i][j] = energy(i,j);
+            }
+        }
+    }
 
 }
